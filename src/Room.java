@@ -49,7 +49,20 @@ public class Room {
     }
 
     public String getName() {
-        return name;
+        String s = name;
+        if (westRoom != 0) {
+            s += "\nYou can go west";
+        }
+        if (northRoom != 0) {
+            s += "\nYou can go north";
+        }
+        if (eastRoom != 0) {
+            s += "\nYou can go east";
+        }
+        if (southRoom != 0) {
+            s += "\nYou can go south";
+        }
+        return s;
     }
 
     public void setName(String name) {

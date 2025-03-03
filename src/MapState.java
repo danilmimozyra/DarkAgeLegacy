@@ -37,29 +37,15 @@ public class MapState {
         return currentRoom;
     }
 
-    public String setCurrentRoom(String direction) {
-        int id;
-        switch (direction){
-            case "west":
-                id = currentRoom.getWestRoom();
-                break;
-            case "north":
-                id = currentRoom.getNorthRoom();
-                break;
-            case "east":
-                id = currentRoom.getEastRoom();
-                break;
-            case "south":
-                id = currentRoom.getSouthRoom();
-                break;
-            default:
-                return "I don't know what to do.";
-        }
-        if (id == 0){
-            return "This room doesn't have an entrance there!";
-        } else {
-            currentRoom = map.get(id);
-            return "You have entered " + map.get(id).getName();
-        }
+    public void setCurrentRoom(Room r) {
+        currentRoom = r;
+    }
+
+    public HashMap<Integer, Room> getMap() {
+        return map;
+    }
+
+    public void setMap(HashMap<Integer, Room> map) {
+        this.map = map;
     }
 }
