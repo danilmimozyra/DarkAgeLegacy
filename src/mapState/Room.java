@@ -1,3 +1,6 @@
+package mapState;
+import NPCs.NPC;
+
 public class Room {
 
     private String name;
@@ -6,6 +9,7 @@ public class Room {
     private int northRoom;
     private int eastRoom;
     private int southRoom;
+    private NPC[] enemies;
 
     public Room(int id, String name, int westRoom, int northRoom, int eastRoom, int southRoom) {
         this.name = name;
