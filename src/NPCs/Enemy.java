@@ -3,21 +3,14 @@ package NPCs;
 import items.Item;
 
 public class Enemy extends NPC{
-    private int health;
+
     private int damage;
     private Item[] drops;
 
-    public Enemy(int health, int damage) {
-        this.health = health;
+    public Enemy(String name, int health, int damage) {
+        super(name, health);
+
         this.damage = damage;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     public int getDamage() {

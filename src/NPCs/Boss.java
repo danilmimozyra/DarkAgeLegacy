@@ -6,8 +6,9 @@ public class Boss extends Enemy{
 
     private String[] attackCycle;
 
-    public Boss(int health, int damage, int spDamage) {
-        super(health, damage);
+    public Boss(String name, int health, int damage, int specialDamage) {
+        super(name, health, damage);
+        this.specialDamage = specialDamage;
     }
 
     public int getSpecialDamage() {

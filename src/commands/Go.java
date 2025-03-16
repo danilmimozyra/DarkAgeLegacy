@@ -1,17 +1,14 @@
 package commands;
 
+import items.player.Player;
 import mapState.MapState;
 
 public class Go extends Command {
+    private String command;
     @Override
-    public String execute() {
-        return null;
-    }
-
-    @Override
-    public String execute(MapState mapS, String direction) {
+    public String execute(MapState mapS, Player player) {
         int id;
-        switch (direction){
+        switch (command){
             case "west":
                 id  = mapS.getCurrentRoom().getWestRoom();
                 break;
@@ -29,7 +26,7 @@ public class Go extends Command {
         }
         if (id != 0) {
             mapS.setCurrentRoom(mapS.getMap().get(id));
-            return "You are now in " + mapS.getCurrentRoom().getName();
+            return mapS.getCurrentRoom().getName();
         } else {
             return "This room doesn't have an entrance there!";
         }
@@ -38,5 +35,10 @@ public class Go extends Command {
     @Override
     public boolean exit() {
         return false;
+    }
+
+    @Override
+    public void setCommand(String command) {
+        this.command = command;
     }
 }

@@ -1,20 +1,22 @@
 package commands;
 
+import items.player.Player;
 import mapState.MapState;
 
 public class Leave extends Command{
-    @Override
-    public String execute() {
-        return null;
-    }
 
     @Override
-    public String execute(MapState mapS, String direction) {
-        return null;
+    public String execute(MapState mapS, Player player) {
+        return ":(";
     }
 
     @Override
     public boolean exit() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public void setCommand(String command) {
+
     }
 }

@@ -6,6 +6,13 @@ public class OffHand extends Item {
     private int speedBuff;
     private int damageBuff;
 
+    public OffHand(String name, int defenceBuff, int speedBuff, int damageBuff) {
+        super(name);
+        this.defenceBuff = defenceBuff;
+        this.speedBuff = speedBuff;
+        this.damageBuff = damageBuff;
+    }
+
     public int getDefenceBuff() {
         return defenceBuff;
     }

@@ -1,15 +1,14 @@
 package commands;
 
+import items.player.Player;
 import mapState.MapState;
 
 public abstract class Command {
-    private String command;
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public abstract String execute();
-    public abstract String execute(MapState mapS, String direction);
+    public abstract String execute(MapState mapS, Player player);
     public abstract boolean exit();
+    public abstract void setCommand(String command);
+
+    public boolean getBlock() {
+        return false;
+    }
 }

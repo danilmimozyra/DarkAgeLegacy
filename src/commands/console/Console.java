@@ -9,13 +9,16 @@ import java.util.Scanner;
 
 public class Console {
 
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc;
     private final MapState mapState;
     private HashMap <String, Command> commands;
-    private Player player;
+    private final Player player;
+    private boolean exit;
 
     public Console() {
         initialiseCommands();
+        sc = new Scanner(System.in);
+        player = new Player();
         mapState = new MapState();
     }
 
@@ -34,20 +37,26 @@ public class Console {
     }
 
     public void start(){
-        System.out.println("You are now in " + mapState.getCurrentRoom().getName());
+        System.out.println(commands.get("help").execute(mapState, player));
+        System.out.println(mapState.getCurrentRoom().getName());
         String line = "";
         do {
+            commands.get("block").setCommand("check");
+            commands.get("block").execute(mapState, player);
             line = sc.nextLine().trim().toLowerCase();
             try {
-                System.out.println(commands.get(line).execute());
-            } catch (Exception e){
+                System.out.println(commands.get(line).execute(mapState, player));
+                exit = commands.get(line).exit();
+            } catch (NullPointerException e){
                 try {
                     String[] lines = line.split("[ ]+");
-                    System.out.println(commands.get(lines[0]).execute(mapState, lines[1]));
-                } catch (IndexOutOfBoundsException e1){
-                    System.out.println("I don't know what to do.");
+                    commands.get(lines[0]).setCommand(lines[1]);
+                    System.out.println(commands.get(lines[0]).execute(mapState, player));
+                    exit = commands.get(lines[0]).exit();
+                } catch (Exception e1){
+                    System.out.println("You seem confused.");
                 }
             }
-        } while (!line.equals("exit"));
+        } while (!exit);
     }
 }
