@@ -3,11 +3,10 @@ package commands;
 import items.player.Player;
 import mapState.MapState;
 
-public class Tip extends Command{
-
+public class Invent extends Command{
     @Override
     public String execute(MapState mapS, Player player) {
-        return mapS.getCurrentRoom().roomInfo();
+        return player.inventoryDescription();
     }
 
     @Override

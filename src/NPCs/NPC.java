@@ -1,6 +1,9 @@
 package NPCs;
 
+import items.Item;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class NPC {
@@ -8,11 +11,14 @@ public class NPC {
     Random rd = new Random();
     private String name;
     private int health;
+    private final ArrayList<HashMap<Integer, Item>> drops;
     private final ArrayList<String> phrases;
+
 
     public NPC(String name, int health) {
         this.name = name;
         this.health = health;
+        drops = new ArrayList<>();
         phrases = new ArrayList<>();
     }
 
@@ -39,6 +45,29 @@ public class NPC {
     }
 
     public String randomPhrase(){
-        return phrases.get(rd.nextInt(phrases.size()));
+        if (!phrases.isEmpty()) {
+            return phrases.get(rd.nextInt(phrases.size()));
+        } else {
+            return "He doesn't seem to talk.";
+        }
+    }
+
+    public void addDrop(int dropRate, Item item) {
+        HashMap<Integer, Item> temp = new HashMap<>();
+        temp.put(dropRate, item);
+        drops.add(temp);
+    }
+
+    public ArrayList<Item> drop() {
+        ArrayList<Item> droppedItems = new ArrayList<>();
+        for (HashMap<Integer, Item> map : drops) {
+            for (int i : map.keySet()) {
+                int j = rd.nextInt(i+1);
+                if (j == i) {
+                    droppedItems.add(map.get(j));
+                }
+            }
+        }
+        return droppedItems;
     }
 }

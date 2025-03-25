@@ -2,14 +2,14 @@ package items;
 
 public class OffHand extends Item {
 
-    private int defenceBuff;
-    private int speedBuff;
-    private int damageBuff;
+    private final int defenceBuff;
+    private final int healthBuff;
+    private final int damageBuff;
 
-    public OffHand(String name, int defenceBuff, int speedBuff, int damageBuff) {
-        super(name);
+    public OffHand(String name, int defenceBuff, int healthBuff, int damageBuff) {
+        super(name, 0, "");
         this.defenceBuff = defenceBuff;
-        this.speedBuff = speedBuff;
+        this.healthBuff = healthBuff;
         this.damageBuff = damageBuff;
     }
 
@@ -17,23 +17,25 @@ public class OffHand extends Item {
         return defenceBuff;
     }
 
-    public void setDefenceBuff(int defenceBuff) {
-        this.defenceBuff = defenceBuff;
-    }
-
-    public int getSpeedBuff() {
-        return speedBuff;
-    }
-
-    public void setSpeedBuff(int speedBuff) {
-        this.speedBuff = speedBuff;
+    public int getHealthBuff() {
+        return healthBuff;
     }
 
     public int getDamageBuff() {
         return damageBuff;
     }
 
-    public void setDamageBuff(int damageBuff) {
-        this.damageBuff = damageBuff;
+    public String description(){
+        String line = "Your off-hand is " + getName() + ". It grants you";
+        if (defenceBuff != 0) {
+            line += " +" + defenceBuff + " defence";
+        }
+        if (healthBuff != 0) {
+            line += " +" + healthBuff + " health";
+        }
+        if (damageBuff != 0) {
+            line += " +" + damageBuff + " damage";
+        }
+        return line + ".";
     }
 }

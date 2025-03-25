@@ -9,9 +9,12 @@ public class Put extends Command {
 
     @Override
     public String execute(MapState mapS, Player player) {
-        Item item = player.findItem(command);
+        Item item = player.removeItem(command);
         mapS.getCurrentRoom().addItem(item);
-        return "You have left " + item.getName() + ".";
+        if (item != null) {
+            return "You have left " + item.getName() + ".";
+        }
+        return "You don't have this item.";
     }
 
     @Override

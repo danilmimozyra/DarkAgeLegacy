@@ -22,11 +22,11 @@ public class Go extends Command {
                 id  = mapS.getCurrentRoom().getSouthRoom();
                 break;
             default:
-                return "I don't know where to go.";
+                return "You seem confused.";
         }
         if (id != 0) {
             mapS.setCurrentRoom(mapS.getMap().get(id));
-            return mapS.getCurrentRoom().getName();
+            return mapS.getCurrentRoom().roomDescription();
         } else {
             return "This room doesn't have an entrance there!";
         }

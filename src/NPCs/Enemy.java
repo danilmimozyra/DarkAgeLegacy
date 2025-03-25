@@ -1,15 +1,12 @@
 package NPCs;
 
-import items.Item;
+public class Enemy extends NPC {
 
-public class Enemy extends NPC{
+    private final int damage;
+    private int defence;
 
-    private int damage;
-    private Item[] drops;
-
-    public Enemy(String name, int health, int damage) {
+    public Enemy(String name, int health, int damage, int defence) {
         super(name, health);
-
         this.damage = damage;
     }
 
@@ -17,15 +14,7 @@ public class Enemy extends NPC{
         return damage;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public Item[] getDrops() {
-        return drops;
-    }
-
-    public void setDrops(Item[] drops) {
-        this.drops = drops;
+    public int getDefence() {
+        return defence;
     }
 }

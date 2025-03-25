@@ -41,6 +41,10 @@ public class Room {
         return southRoom;
     }
 
+    public String roomName(){
+        return name;
+    }
+
     public String getName() {
         String line = "You are now in " + name + ". ";
         if (westRoom != 0) {
@@ -59,11 +63,16 @@ public class Room {
     }
 
     public String roomInfo(){
-        return getName() + "\nTo move between rooms use the command 'go'. The entry should look like this: go [direction].";
+        return getName() + "\nTo move between rooms use the command 'go'. The entry should look like this: go [direction]." +
+                "\n" + itemsInfo() + "\n" + NPCInfo();
     }
 
     public void addItem(Item item) {
-        items.add(item);
+        if (items.contains(item) && item != null) {
+            items.get(items.indexOf(item)).changeAmount(item.getAmount());
+        } else {
+            items.add(item);
+        }
     }
 
     public void removeItem(Item item) {
@@ -73,8 +82,10 @@ public class Room {
     public Item findItem(String name) {
         if (items != null) {
             for (Item item : items) {
-                if (item.getName().equalsIgnoreCase(name)) {
-                    return item;
+                if (item != null) {
+                    if (item.getName().equalsIgnoreCase(name)) {
+                        return item;
+                    }
                 }
             }
         }
@@ -83,6 +94,7 @@ public class Room {
 
     public void addNPC(NPC npc){
         npcs.add(npc);
+
     }
 
     public NPC findNPC(String name){
@@ -99,37 +111,81 @@ public class Room {
     }
 
     public String itemsList(){
-        String line = "You can see a ";
-        for (int i = 0; i < items.size(); i++) {
-            line += "'" + items.get(i).getName() + "'";
-            if (i <= items.size() - 3) {
-                line += ", ";
-            } else if (i <= items.size() - 2) {
-                line += " and ";
-            } else if (i == items.size() - 1) {
-                line += " laying on the floor.\nYou can pick them up using the command 'take'. The entry should look like this: take [item].";
+        String line = "There are no items in the room.";
+        if (getSize() > 0) {
+            line = "You can see a ";
+            int i = -1;
+            for (Item item : items) {
+                if (item != null) {
+                    i += 1;
+                    line += "'" + item.getName() + "'";
+                    if (item.getAmount() > 1) {
+                        line += "(" + item.getAmount() + ")";
+                    }
+                    if (i <= getSize() - 3) {
+                        line += ", ";
+                    } else if (i <= getSize() - 2) {
+                        line += " and ";
+                    } else if (i == getSize() - 1) {
+                        line += " laying on the floor.";
+                    }
+                }
             }
         }
         return line;
     }
 
-    public String NPCList(){
-        String line = "";
-        if (npcs.size() > 1) {
-            line += "There are NPCs ";
-        } else {
-            line += "There is NPC ";
+    public String itemsInfo(){
+        if (items.isEmpty()){
+            return itemsList();
         }
-        for (int i = 0; i < npcs.size(); i++) {
-            line += "'" + npcs.get(i).getName() + "'";
-            if (i <= npcs.size() - 3) {
-                line += ", ";
-            } else if (i <= npcs.size() - 2) {
-                line += " and ";
-            } else if (i == npcs.size() - 1) {
-                line += " in the room.\nYou can interact with them using the command 'talk'. The entry should look like this: talk [NPC].";
+        return itemsList() + "\nYou can pick them up using the command 'take'. The entry should look like this: take [item].";
+    }
+
+    public String NPCList(){
+        String line = "There is noone in this room.";
+        if (!npcs.isEmpty()) {
+            if (npcs.size() > 1) {
+                line = "There are NPCs ";
+            } else {
+                line = "There is NPC ";
+            }
+            for (int i = 0; i < npcs.size(); i++) {
+                line += "'" + npcs.get(i).getName() + "'";
+                if (i <= npcs.size() - 3) {
+                    line += ", ";
+                } else if (i <= npcs.size() - 2) {
+                    line += " and ";
+                } else if (i == npcs.size() - 1) {
+                    line += " in the room.";
+                }
             }
         }
         return line;
+    }
+
+    public String NPCInfo(){
+        if (npcs.isEmpty()) {
+            return NPCList();
+        }
+        return NPCList() + "\nYou can interact with them using the command 'talk'. The entry should look like this: talk [NPC].";
+    }
+
+    public int getSize() {
+        int i = 0;
+        for (Item item : items) {
+            if (item != null) {
+                i += 1;
+            }
+        }
+        return i;
+    }
+
+    public String roomDescription(){
+        return getName() + "\n" + itemsList() + "\n" + NPCList();
+    }
+
+    public void setSouthRoom(int southRoom) {
+        this.southRoom = southRoom;
     }
 }

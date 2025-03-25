@@ -7,6 +7,7 @@ import items.Weapon;
 
 public class Player {
 
+    private int maxHealth;
     private int health;
     private int defence;
     private int damage;
@@ -15,7 +16,8 @@ public class Player {
     private OffHand offHand;
 
     public Player() {
-        health = 100;
+        maxHealth = 100;
+        health = 10;
         defence = 0;
         damage = 5;
         inventory = new Inventory();
@@ -35,6 +37,22 @@ public class Player {
 
     public void setOffHand(OffHand offHand) {
         this.offHand = offHand;
+        setMaxHealth();
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    private void setMaxHealth() {
+        if (offHand != null) {
+            this.maxHealth = 100 + offHand.getHealthBuff();
+            if (maxHealth == health + offHand.getHealthBuff()) {
+                setHealth(maxHealth);
+            } else if (health > maxHealth) {
+                setHealth(maxHealth);
+            }
+        }
     }
 
     public int getHealth() {
@@ -46,7 +64,10 @@ public class Player {
     }
 
     public int getDefence() {
-        return defence;
+        if (offHand != null) {
+            return defence + offHand.getDefenceBuff();
+        }
+        return  damage;
     }
 
     public void setDefence(int defence) {
@@ -54,22 +75,21 @@ public class Player {
     }
 
     public int getDamage() {
+        int d = damage;
         if (weapon != null) {
-            return damage + weapon.getDamage();
+            d += weapon.getDamage();
+            if (hasItem("Quiver") && weapon.getName().equalsIgnoreCase("Crossbow")) {
+                d += 5;
+            } else if (hasItem("Grindstone") && weapon.getName().equalsIgnoreCase("Broadsword")) {
+                d += 5;
+            } else if (hasItem("Talisman") && weapon.getName().equalsIgnoreCase("Fire-Staff")) {
+                d += 5;
+            }
         }
-        return  damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
+        if (offHand != null) {
+            d += offHand.getDamageBuff();
+        }
+        return d;
     }
 
     public boolean addItem(Item item) {
@@ -84,13 +104,70 @@ public class Player {
         Item item;
         if (inventory.getItems() != null) {
             for (int i = 0; i < inventory.getItems().length; i++) {
-                if (inventory.getItems()[i].getName().equalsIgnoreCase(name)) {
-                    item = inventory.getItems()[i];
-                    inventory.getItems()[i] = null;
-                    return item;
+                if (inventory.getItems()[i] != null) {
+                    if (inventory.getItems()[i].getName().equalsIgnoreCase(name)) {
+                        item = inventory.getItems()[i];
+                        return item;
+                    }
                 }
             }
         }
         return null;
+    }
+
+    public boolean hasItem(String name){
+        if (inventory.getItems() != null) {
+            for (int i = 0; i < inventory.getItems().length; i++) {
+                if (inventory.getItems()[i] != null) {
+                    if (inventory.getItems()[i].getName().equalsIgnoreCase(name)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public Item removeItem(String name) {
+        Item item;
+        if (inventory.getItems() != null) {
+            for (int i = 0; i < inventory.getItems().length; i++) {
+                if (inventory.getItems()[i] != null) {
+                    if (inventory.getItems()[i].getName().equalsIgnoreCase(name)) {
+                        item = inventory.getItems()[i];
+                        inventory.getItems()[i] = null;
+                        return item;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public void changeAmount(String name, int amount){
+        if (inventory.getItems() != null) {
+            for (int i = 0; i < inventory.getItems().length; i++) {
+                if (inventory.getItems()[i] != null) {
+                    if (inventory.getItems()[i].getName().equalsIgnoreCase(name)) {
+                        inventory.getItems()[i].changeAmount(amount);
+                        if (inventory.getItems()[i].getAmount() <= 0) {
+                            removeItem(name);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public String inventoryDescription(){
+        String line = "Hour health is " + getHealth() + "/" + getMaxHealth()  + ".";
+        if (getWeapon() != null) {
+            line += "\n" + weapon.description();
+        }
+        if (getOffHand() != null) {
+            line += "\n" + offHand.description();
+        }
+        line += "\n" + inventory.description();
+        return line;
     }
 }

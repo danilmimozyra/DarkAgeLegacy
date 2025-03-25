@@ -1,0 +1,7 @@
+9,1,Book-of-Spells,0,0,5
+1,1,Shield,7,0,0
+1,2,Oneshot,400
+3,2,Broadsword,10
+4,2,Fire Staff,12
+1,0,Throne-Room-Key,0,k
+1,0,Scrolls-of-Teleportation,0,s

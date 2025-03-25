@@ -1,0 +1,5 @@
+2,1,Archer,30,3,0
+2,1,Zombie,25,3,0
+1,0,Wounded-Knight,20,0,0
+7,2,Warden,200,10,3,15
+10,2,Anthrax,300,17,5,24

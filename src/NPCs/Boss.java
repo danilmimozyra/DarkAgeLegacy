@@ -3,11 +3,12 @@ package NPCs;
 public class Boss extends Enemy{
 
     private int specialDamage;
-
+    private int defence;
     private String[] attackCycle;
 
-    public Boss(String name, int health, int damage, int specialDamage) {
-        super(name, health, damage);
+    public Boss(String name, int health, int damage, int defence, int specialDamage) {
+        super(name, health, damage, defence);
+        this.defence = defence;
         this.specialDamage = specialDamage;
     }
 

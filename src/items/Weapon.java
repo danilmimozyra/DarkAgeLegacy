@@ -1,10 +1,10 @@
 package items;
 
 public class Weapon extends Item {
-    private int damage;
+    private final int damage;
 
     public Weapon(String name, int damage) {
-        super(name);
+        super(name, 0, "");
         this.damage = damage;
     }
 
@@ -12,7 +12,7 @@ public class Weapon extends Item {
         return damage;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
+    public String description(){
+        return "Your weapon is " + getName() + ". Your weapon's damage is " + getDamage() + ".";
     }
 }

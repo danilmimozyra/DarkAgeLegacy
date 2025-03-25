@@ -12,23 +12,27 @@ public class Take extends Command {
     @Override
     public String execute(MapState mapS, Player player) {
         Item item = mapS.getCurrentRoom().findItem(command);
-        if (item.getClass() == Weapon.class) {
-            mapS.getCurrentRoom().removeItem(item);
-            mapS.getCurrentRoom().addItem(player.getWeapon());
-            player.setWeapon((Weapon) item);
-            return "You've picked up weapon " + item.getName() + ".";
-        } else if (item.getClass() == OffHand.class) {
-            mapS.getCurrentRoom().removeItem(item);
-            mapS.getCurrentRoom().addItem(player.getOffHand());
-            player.setOffHand((OffHand) item);
-            return "You've picked up off-hand " + item.getName() + ".";
-        } else {
-            if (player.addItem(item)) {
+        if (item != null) {
+            if (item.getClass() == Weapon.class) {
                 mapS.getCurrentRoom().removeItem(item);
-                return "You've picked up " + item.getName() + ".";
+                mapS.getCurrentRoom().addItem(player.getWeapon());
+                player.setWeapon((Weapon) item);
+                return "You've picked up weapon " + item.getName() + ".";
+            } else if (item.getClass() == OffHand.class) {
+                mapS.getCurrentRoom().removeItem(item);
+                mapS.getCurrentRoom().addItem(player.getOffHand());
+                player.setOffHand((OffHand) item);
+                return "You've picked up off-hand " + item.getName() + ".";
             } else {
-                return "You don't have enough space to pick this up!";
+                if (player.addItem(item)) {
+                    mapS.getCurrentRoom().removeItem(item);
+                    return "You've picked up " + item.getName() + ".";
+                } else {
+                    return "You don't have enough space to pick this up!";
+                }
             }
+        } else {
+            return "There is no such item.";
         }
     }
 
