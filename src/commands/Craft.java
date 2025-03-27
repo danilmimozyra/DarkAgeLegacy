@@ -1,5 +1,8 @@
 package commands;
 
+import NPCs.Boss;
+import NPCs.Enemy;
+import NPCs.NPC;
 import items.Item;
 import items.OffHand;
 import items.Weapon;
@@ -15,7 +18,7 @@ import java.util.HashMap;
 public class Craft extends Command{
 
     private String command;
-    private HashMap<String, String[][]> crafts;
+    private final HashMap<String, String[][]> crafts;
 
     public Craft() {
         crafts = new HashMap<>();
@@ -25,16 +28,17 @@ public class Craft extends Command{
     @Override
     public String execute(MapState mapS, Player player) {
         String name = command.toLowerCase();
+        String line = "";
         if (crafts.get(name) != null) {
             for (int i = 0; i < crafts.get(name).length-1; i++) {
                 if (player.findItem(crafts.get(name)[i][0]) != null) {
                     if (player.findItem(crafts.get(name)[i][0]).getAmount() < Integer.parseInt(crafts.get(name)[i][1])) {
                         System.out.println(crafts.get(name)[i][0] + ", " + crafts.get(name)[i][1]);
-                        return "You don't have enough materials.";
+                        line = "You don't have enough materials.";
                     }
                 } else {
                     System.out.println(crafts.get(name)[i][0] + ", " + crafts.get(name)[i][1]);
-                    return "You don't have enough materials.";
+                    line = "You don't have enough materials.";
                 }
             }
             for (int i = 0; i < crafts.get(name).length-1; i++) {
@@ -42,9 +46,11 @@ public class Craft extends Command{
             }
             Item item = craftItem(name, crafts.get(name)[crafts.get(name).length-1]);
             mapS.getCurrentRoom().addItem(item);
-            return "You've crafted " + item.getName() + ".";
+            line = "You've crafted " + item.getName() + ".";
+        } else {
+            line = "There is no such crafting recipe.";
         }
-        return "There is no such crafting recipe.";
+        return line;
     }
 
     @Override
@@ -94,5 +100,18 @@ public class Craft extends Command{
             case "2" -> new Weapon(craftsInfo[4], Integer.parseInt(craftsInfo[5]));
             default -> null;
         };
+    }
+
+    @Override
+    public String attackPlayer(MapState mapS, Player player, NPC npc) {
+        if (npc != null) {
+            if (npc.getClass() == Enemy.class || npc.getClass() == Boss.class) {
+                mapS.getCurrentRoom().setAttackedEnemy((Enemy) npc);
+                return "=================================================================================================" +
+                        "=====================================================================\n>> " +
+                        "\n" + ((Enemy) npc).attack(player);
+            }
+        }
+        return "";
     }
 }

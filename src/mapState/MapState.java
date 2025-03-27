@@ -54,7 +54,13 @@ public class MapState {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] npcInfo = line.split(",");
-                map.get(Integer.parseInt(npcInfo[0])).addNPC(createNPC(npcInfo));
+                NPC npc = createNPC(npcInfo);
+                if (npc.getClass() == Enemy.class || npc.getClass() == Boss.class) {
+                    line = br.readLine();
+                    String[] cycle = line.split(",");
+                    ((Enemy) npc).setAttackCycle(cycle);
+                }
+                map.get(Integer.parseInt(npcInfo[0])).addNPC(npc);
             }
         } catch (FileNotFoundException e) {
 

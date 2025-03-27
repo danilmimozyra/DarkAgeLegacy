@@ -1,5 +1,7 @@
 package commands;
 
+import NPCs.Boss;
+import NPCs.Enemy;
 import NPCs.NPC;
 import items.Item;
 import items.player.Player;
@@ -12,6 +14,7 @@ public class Attack extends Command {
 
     @Override
     public String execute(MapState mapS, Player player) {
+        String line;
         NPC n = mapS.getCurrentRoom().findNPC(command);
         if (n != null) {
             n.sufferDamage(player.getDamage());
@@ -23,11 +26,15 @@ public class Attack extends Command {
                     }
                 }
                 mapS.getCurrentRoom().removeNPC(n);
-                return killDescription(n, items);
+                assert items != null;
+                line = killDescription(n, items);
+            } else {
+                line = "You've attacked " + n.getName() + ". His remaining health is " + n.getHealth() + "." + attackPlayer(mapS, player, n);
             }
-            return "You've attacked " + n.getName() + ". His remaining health is " + n.getHealth() + ".";
+        } else {
+            line = "There is no such enemy";
         }
-        return "There is no such enemy";
+        return line;
     }
 
     private String killDescription(NPC n, ArrayList<Item> items) {
@@ -59,5 +66,18 @@ public class Attack extends Command {
     @Override
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    @Override
+    public String attackPlayer(MapState mapS, Player player, NPC npc) {
+        if (npc != null) {
+            if (npc.getClass() == Enemy.class || npc.getClass() == Boss.class) {
+                mapS.getCurrentRoom().setAttackedEnemy((Enemy) npc);
+                return "\n=================================================================================================" +
+                        "=====================================================================" +
+                        "\n" + ((Enemy) npc).attack(player);
+            }
+        }
+        return "";
     }
 }

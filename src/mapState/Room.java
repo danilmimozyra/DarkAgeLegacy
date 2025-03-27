@@ -1,5 +1,6 @@
 package mapState;
 
+import NPCs.Enemy;
 import NPCs.NPC;
 import items.Item;
 
@@ -9,9 +10,10 @@ public class Room {
 
     private final String name;
     private int westRoom;
-    private int northRoom;
-    private int eastRoom;
+    private final int northRoom;
+    private final int eastRoom;
     private int southRoom;
+    private Enemy attackedEnemy;
     private final ArrayList<NPC> npcs;
     private final ArrayList<Item> items;
 
@@ -43,6 +45,14 @@ public class Room {
 
     public String roomName(){
         return name;
+    }
+
+    public Enemy getAttackedEnemy() {
+        return attackedEnemy;
+    }
+
+    public void setAttackedEnemy(Enemy attackedEnemy) {
+        this.attackedEnemy = attackedEnemy;
     }
 
     public String getName() {

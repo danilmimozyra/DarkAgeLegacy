@@ -10,14 +10,14 @@ public class Player {
     private int maxHealth;
     private int health;
     private int defence;
-    private int damage;
-    private Inventory inventory;
+    private final int damage;
+    private final Inventory inventory;
     private Weapon weapon;
     private OffHand offHand;
 
     public Player() {
         maxHealth = 100;
-        health = 10;
+        health = 100;
         defence = 0;
         damage = 5;
         inventory = new Inventory();
@@ -67,7 +67,15 @@ public class Player {
         if (offHand != null) {
             return defence + offHand.getDefenceBuff();
         }
-        return  damage;
+        return defence;
+    }
+
+    public void sufferDamage(int damage) {
+        int i = damage - getDefence();
+        if (i < 0) {
+            i = 0;
+        }
+        health -= i;
     }
 
     public void setDefence(int defence) {
@@ -93,11 +101,7 @@ public class Player {
     }
 
     public boolean addItem(Item item) {
-        if (inventory.addItem(item)) {
-            return true;
-        } else {
-            return false;
-        }
+        return inventory.addItem(item);
     }
 
     public Item findItem(String name) {
@@ -160,7 +164,7 @@ public class Player {
     }
 
     public String inventoryDescription(){
-        String line = "Hour health is " + getHealth() + "/" + getMaxHealth()  + ".";
+        String line = "Your health is " + getHealth() + "/" + getMaxHealth()  + ".";
         if (getWeapon() != null) {
             line += "\n" + weapon.description();
         }

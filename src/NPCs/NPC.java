@@ -9,10 +9,10 @@ import java.util.Random;
 public class NPC {
 
     Random rd = new Random();
-    private String name;
-    private int health;
-    private final ArrayList<HashMap<Integer, Item>> drops;
-    private final ArrayList<String> phrases;
+    protected String name;
+    protected int health;
+    protected final ArrayList<HashMap<Integer, Item>> drops;
+    protected final ArrayList<String> phrases;
 
 
     public NPC(String name, int health) {

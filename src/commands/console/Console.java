@@ -46,9 +46,8 @@ public class Console {
         do {
             commands.get("block").setCommand("check");
             commands.get("block").execute(mapState, player);
-            System.out.println("=================================================================================================" +
-                    "=====================================================================");
-            System.out.print(">> ");
+            System.out.print("=================================================================================================" +
+                    "=====================================================================\n>> ");
             line = sc.nextLine().trim().toLowerCase();
             String[] lines = line.split("[ ]+");
             if (lines.length == 1 && commands.containsKey(line)) {

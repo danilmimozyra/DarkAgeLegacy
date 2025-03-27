@@ -1,5 +1,7 @@
 package commands;
 
+import NPCs.Boss;
+import NPCs.Enemy;
 import NPCs.NPC;
 import items.player.Player;
 import mapState.MapState;
@@ -24,5 +26,10 @@ public class Talk extends Command{
     @Override
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    @Override
+    public String attackPlayer(MapState mapS, Player player, NPC npc) {
+        return "";
     }
 }

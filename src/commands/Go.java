@@ -1,5 +1,8 @@
 package commands;
 
+import NPCs.Boss;
+import NPCs.Enemy;
+import NPCs.NPC;
 import items.player.Player;
 import mapState.MapState;
 
@@ -8,6 +11,7 @@ public class Go extends Command {
     @Override
     public String execute(MapState mapS, Player player) {
         int id;
+        String line =  attackPlayer(mapS, player, mapS.getCurrentRoom().getAttackedEnemy());
         switch (command){
             case "west":
                 id  = mapS.getCurrentRoom().getWestRoom();
@@ -26,7 +30,7 @@ public class Go extends Command {
         }
         if (id != 0) {
             mapS.setCurrentRoom(mapS.getMap().get(id));
-            return mapS.getCurrentRoom().roomDescription();
+            return line + mapS.getCurrentRoom().roomDescription();
         } else {
             return "This room doesn't have an entrance there!";
         }
@@ -40,5 +44,18 @@ public class Go extends Command {
     @Override
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    @Override
+    public String attackPlayer(MapState mapS, Player player, NPC npc) {
+        if (npc != null) {
+            if (npc.getClass() == Enemy.class || npc.getClass() == Boss.class) {
+                mapS.getCurrentRoom().setAttackedEnemy((Enemy) npc);
+                return "=================================================================================================" +
+                        "=====================================================================\n" +
+                        ((Enemy) npc).attack(player);
+            }
+        }
+        return "";
     }
 }
