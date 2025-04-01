@@ -1,1 +1,1 @@
-Healing-potion;Grass,1,Moss,1;0,1,h
+Healing-potion;Mushroom,1,Moss,1;0,1,h

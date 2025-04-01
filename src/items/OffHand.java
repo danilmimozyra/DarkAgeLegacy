@@ -25,6 +25,9 @@ public class OffHand extends Item {
         return damageBuff;
     }
 
+    /**
+     * @return String with the information about the inventory
+     */
     public String description(){
         String line = "Your off-hand is " + getName() + ". It grants you";
         if (defenceBuff != 0) {

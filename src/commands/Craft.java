@@ -15,8 +15,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * This class is used to craft items
+ */
 public class Craft extends Command{
 
+    private boolean dead = false;
     private String command;
     private final HashMap<String, String[][]> crafts;
 
@@ -25,37 +29,48 @@ public class Craft extends Command{
         loadCrafts();
     }
 
+    /**
+     * @param mapS is a current MapState in which the changes will happen
+     * @param player is a Player who makes changes
+     * @return String with information what had happened
+     */
     @Override
     public String execute(MapState mapS, Player player) {
-        String name = command.toLowerCase();
-        String line = "";
-        if (crafts.get(name) != null) {
-            for (int i = 0; i < crafts.get(name).length-1; i++) {
-                if (player.findItem(crafts.get(name)[i][0]) != null) {
-                    if (player.findItem(crafts.get(name)[i][0]).getAmount() < Integer.parseInt(crafts.get(name)[i][1])) {
-                        System.out.println(crafts.get(name)[i][0] + ", " + crafts.get(name)[i][1]);
-                        line = "You don't have enough materials.";
+        if (command != null) {
+            String name = command.toLowerCase();
+            String line = "";
+            if (crafts.get(name) != null) {
+                for (int i = 0; i < crafts.get(name).length-1; i++) {
+                    if (player.findItem(crafts.get(name)[i][0]) != null) {
+                        if (player.findItem(crafts.get(name)[i][0]).getAmount() < Integer.parseInt(crafts.get(name)[i][1])) {
+                            return "You don't have enough materials.";
+                        }
+                    } else {
+                        return "You don't have enough materials.";
                     }
-                } else {
-                    System.out.println(crafts.get(name)[i][0] + ", " + crafts.get(name)[i][1]);
-                    line = "You don't have enough materials.";
                 }
+                for (int i = 0; i < crafts.get(name).length-1; i++) {
+                    player.changeAmount(crafts.get(name)[i][0], Integer.parseInt(crafts.get(name)[i][1]) * -1);
+                }
+                Item item = craftItem(name, crafts.get(name)[crafts.get(name).length-1]);
+                mapS.getCurrentRoom().addItem(item);
+                line = "You've crafted " + item.getName() + ".";
+                line += attackPlayer(mapS, player, mapS.getCurrentRoom().getAttackedEnemy());
+                if (player.getHealth() <= 0) {
+                    dead = true;
+                    line += "\nYou had died.";
+                }
+            } else {
+                line = "There is no such crafting recipe.";
             }
-            for (int i = 0; i < crafts.get(name).length-1; i++) {
-                player.changeAmount(crafts.get(name)[i][0], Integer.parseInt(crafts.get(name)[i][1]) * -1);
-            }
-            Item item = craftItem(name, crafts.get(name)[crafts.get(name).length-1]);
-            mapS.getCurrentRoom().addItem(item);
-            line = "You've crafted " + item.getName() + ".";
-        } else {
-            line = "There is no such crafting recipe.";
+            return line;
         }
-        return line;
+        return "There is no such crafting recipe.";
     }
 
     @Override
     public boolean exit() {
-        return false;
+        return dead;
     }
 
     @Override
@@ -63,6 +78,10 @@ public class Craft extends Command{
         this.command = command;
     }
 
+
+    /**
+     * This method loads all items which you will be able to craft
+     */
     private void loadCrafts(){
         try (BufferedReader br = new BufferedReader(new FileReader("crafts.txt"))) {
             String line;
@@ -92,6 +111,12 @@ public class Craft extends Command{
         }
     }
 
+
+    /**
+     * @param name is the name of the crafted item
+     * @param craftsInfo is an array which contains information about the crafted item
+     * @return crafted Item
+     */
     private Item craftItem(String name,String[] craftsInfo) {
         return switch (craftsInfo[0]) {
             case "0" -> new Item(name, Integer.parseInt(craftsInfo[1]), craftsInfo[2]);
@@ -102,13 +127,19 @@ public class Craft extends Command{
         };
     }
 
+    /**
+     * @param mapS is a current MapState in the Enemy is currently located
+     * @param player is Player who is getting attacked
+     * @param npc is an NPC. If NPC is an Enemy who will attack the player
+     * @return String with information what had happened
+     */
     @Override
     public String attackPlayer(MapState mapS, Player player, NPC npc) {
         if (npc != null) {
             if (npc.getClass() == Enemy.class || npc.getClass() == Boss.class) {
                 mapS.getCurrentRoom().setAttackedEnemy((Enemy) npc);
-                return "=================================================================================================" +
-                        "=====================================================================\n>> " +
+                return "\n=================================================================================================" +
+                        "=====================================================================" +
                         "\n" + ((Enemy) npc).attack(player);
             }
         }

@@ -12,6 +12,9 @@ public class Weapon extends Item {
         return damage;
     }
 
+    /**
+     * @return String with the information about the inventory
+     */
     public String description(){
         return "Your weapon is " + getName() + ". Your weapon's damage is " + getDamage() + ".";
     }

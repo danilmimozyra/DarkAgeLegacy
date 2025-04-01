@@ -1,12 +1,19 @@
 package commands;
 
-import NPCs.Boss;
-import NPCs.Enemy;
 import NPCs.NPC;
 import items.player.Player;
 import mapState.MapState;
 
-public class Invent extends Command{
+/**
+ * This class is used to print information about the player and his inventory
+ */
+public class Invent extends Command {
+
+    /**
+     * @param mapS is a current MapState in which the changes will happen
+     * @param player is a Player who makes changes
+     * @return String with information what had happened
+     */
     @Override
     public String execute(MapState mapS, Player player) {
         return player.inventoryDescription();
@@ -24,6 +31,6 @@ public class Invent extends Command{
 
     @Override
     public String attackPlayer(MapState mapS, Player player, NPC npc) {
-        return "";
+        return null;
     }
 }

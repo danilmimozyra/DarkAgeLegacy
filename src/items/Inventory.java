@@ -1,5 +1,8 @@
 package items;
 
+/**
+ * Player's inventory
+ */
 public class Inventory {
     private final Item[] items;
 
@@ -7,6 +10,10 @@ public class Inventory {
         items = new Item[4];
     }
 
+    /**
+     * @param item is an Item that being added
+     * @return true if the item was added
+     */
     public boolean addItem(Item item) {
         if (item.isStackable()) {
             for (int i = 0; i < items.length; i++) {
@@ -31,6 +38,9 @@ public class Inventory {
         return items;
     }
 
+    /**
+     * @return String with the information about the inventory
+     */
     public String description(){
         String line = "You have ";
         for(int i = 0; i < items.length; i++){
@@ -44,9 +54,9 @@ public class Inventory {
             }
         }
         if (line.equals("You have ")) {
-            line += "nothing ";
+            line += "nothing in your inventory.";
         }
-        return line + "in your inventory.";
+        return line;
 
     }
 

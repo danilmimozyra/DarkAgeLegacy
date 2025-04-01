@@ -12,14 +12,12 @@ public class NPC {
     protected String name;
     protected int health;
     protected final ArrayList<HashMap<Integer, Item>> drops;
-    protected final ArrayList<String> phrases;
 
 
     public NPC(String name, int health) {
         this.name = name;
         this.health = health;
         drops = new ArrayList<>();
-        phrases = new ArrayList<>();
     }
 
     public String getName() {
@@ -32,24 +30,6 @@ public class NPC {
 
     public void sufferDamage(int damage) {
         health -= damage;
-    }
-
-    public ArrayList<String> getPhrases() {
-        return phrases;
-    }
-
-    public void addPhrase(String phrase) {
-        if (!phrases.contains(phrase)) {
-            phrases.add(phrase);
-        }
-    }
-
-    public String randomPhrase(){
-        if (!phrases.isEmpty()) {
-            return phrases.get(rd.nextInt(phrases.size()));
-        } else {
-            return "He doesn't seem to talk.";
-        }
     }
 
     public void addDrop(int dropRate, Item item) {

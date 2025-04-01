@@ -1,5 +1,5 @@
 2,Archer,1,2,Crossbow,11
-2,Archer,0,0,Grass,1,n
+2,Archer,0,0,Mushroom,1,n
 2,Zombie,0,0,Moss,1,n
 1,Wounded-Knight,0,0,Grass,1,n
 7,Warden,0,0,Throne-Room-Key,0,k

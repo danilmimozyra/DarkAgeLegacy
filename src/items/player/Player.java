@@ -5,12 +5,14 @@ import items.Item;
 import items.OffHand;
 import items.Weapon;
 
+/**
+ * Player
+ */
 public class Player {
 
     private int maxHealth;
     private int health;
     private int defence;
-    private final int damage;
     private final Inventory inventory;
     private Weapon weapon;
     private OffHand offHand;
@@ -19,7 +21,6 @@ public class Player {
         maxHealth = 100;
         health = 100;
         defence = 0;
-        damage = 5;
         inventory = new Inventory();
     }
 
@@ -70,6 +71,9 @@ public class Player {
         return defence;
     }
 
+    /**
+     * @param damage which the player will suffer
+     */
     public void sufferDamage(int damage) {
         int i = damage - getDefence();
         if (i < 0) {
@@ -83,7 +87,7 @@ public class Player {
     }
 
     public int getDamage() {
-        int d = damage;
+        int d = 0;
         if (weapon != null) {
             d += weapon.getDamage();
             if (hasItem("Quiver") && weapon.getName().equalsIgnoreCase("Crossbow")) {
@@ -93,6 +97,8 @@ public class Player {
             } else if (hasItem("Talisman") && weapon.getName().equalsIgnoreCase("Fire-Staff")) {
                 d += 5;
             }
+        } else {
+            d = 5;
         }
         if (offHand != null) {
             d += offHand.getDamageBuff();
@@ -104,6 +110,10 @@ public class Player {
         return inventory.addItem(item);
     }
 
+    /**
+     * @param name the name of the item that is being searched
+     * @return Item with the given name
+     */
     public Item findItem(String name) {
         Item item;
         if (inventory.getItems() != null) {
@@ -119,6 +129,11 @@ public class Player {
         return null;
     }
 
+
+    /**
+     * @param name the name of the item that is being searched
+     * @return true if the item has been found
+     */
     public boolean hasItem(String name){
         if (inventory.getItems() != null) {
             for (int i = 0; i < inventory.getItems().length; i++) {
@@ -148,6 +163,10 @@ public class Player {
         return null;
     }
 
+    /**
+     * @param name the name of the item that is being searched
+     * @param amount the amount that should be changed
+     */
     public void changeAmount(String name, int amount){
         if (inventory.getItems() != null) {
             for (int i = 0; i < inventory.getItems().length; i++) {
@@ -163,6 +182,9 @@ public class Player {
         }
     }
 
+    /**
+     * @return String with information about the player's inventory
+     */
     public String inventoryDescription(){
         String line = "Your health is " + getHealth() + "/" + getMaxHealth()  + ".";
         if (getWeapon() != null) {

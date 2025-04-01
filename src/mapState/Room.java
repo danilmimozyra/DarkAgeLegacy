@@ -6,6 +6,9 @@ import items.Item;
 
 import java.util.ArrayList;
 
+/**
+ * This class is used to create rooms of the map
+ */
 public class Room {
 
     private final String name;
@@ -89,6 +92,10 @@ public class Room {
         items.remove(item);
     }
 
+    /**
+     * @param name is a name of the item
+     * @return Item if it has been found
+     */
     public Item findItem(String name) {
         if (items != null) {
             for (Item item : items) {
@@ -107,6 +114,10 @@ public class Room {
 
     }
 
+    /**
+     * @param name is a name of the NPC
+     * @return NPC if it has been found
+     */
     public NPC findNPC(String name){
         for (NPC n : npcs) {
             if (n.getName().equalsIgnoreCase(name)) {
@@ -120,6 +131,9 @@ public class Room {
         npcs.remove(n);
     }
 
+    /**
+     * @return String with information about items in the room
+     */
     public String itemsList(){
         String line = "There are no items in the room.";
         if (getSize() > 0) {
@@ -152,6 +166,9 @@ public class Room {
         return itemsList() + "\nYou can pick them up using the command 'take'. The entry should look like this: take [item].";
     }
 
+    /**
+     * @return String with information about NPCs in the room
+     */
     public String NPCList(){
         String line = "There is noone in this room.";
         if (!npcs.isEmpty()) {
@@ -191,11 +208,18 @@ public class Room {
         return i;
     }
 
+    /**
+     * @return String with the information about the room
+     */
     public String roomDescription(){
         return getName() + "\n" + itemsList() + "\n" + NPCList();
     }
 
     public void setSouthRoom(int southRoom) {
         this.southRoom = southRoom;
+    }
+
+    public void setWestRoom(int westRoom) {
+        this.westRoom = westRoom;
     }
 }

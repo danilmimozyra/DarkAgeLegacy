@@ -9,9 +9,19 @@ import mapState.MapState;
 
 import java.util.ArrayList;
 
+/**
+ * This class is used to attack enemies
+ */
 public class Attack extends Command {
+
+    private boolean dead = false;
     private String command;
 
+    /**
+     * @param mapS is a current MapState in which the changes will happen
+     * @param player is a Player who makes changes
+     * @return String with information what had happened
+     */
     @Override
     public String execute(MapState mapS, Player player) {
         String line;
@@ -28,8 +38,13 @@ public class Attack extends Command {
                 mapS.getCurrentRoom().removeNPC(n);
                 assert items != null;
                 line = killDescription(n, items);
+                mapS.getCurrentRoom().setAttackedEnemy(null);
             } else {
                 line = "You've attacked " + n.getName() + ". His remaining health is " + n.getHealth() + "." + attackPlayer(mapS, player, n);
+                if (player.getHealth() <= 0) {
+                    dead = true;
+                    line += "\nYou had died.";
+                }
             }
         } else {
             line = "There is no such enemy";
@@ -37,6 +52,11 @@ public class Attack extends Command {
         return line;
     }
 
+    /**
+     * @param n is a killed NPC
+     * @param items is an ArrayList which contains all the items he had dropped
+     * @return String with information what he dropped
+     */
     private String killDescription(NPC n, ArrayList<Item> items) {
         String line = "You've killed " + n.getName() + ".";
         if (!items.isEmpty()) {
@@ -60,7 +80,7 @@ public class Attack extends Command {
 
     @Override
     public boolean exit() {
-        return false;
+        return dead;
     }
 
     @Override
@@ -68,6 +88,12 @@ public class Attack extends Command {
         this.command = command;
     }
 
+    /**
+     * @param mapS is a current MapState in the Enemy is currently located
+     * @param player is Player who is getting attacked
+     * @param npc is an NPC. If NPC is an Enemy who will attack the player
+     * @return String with information what had happened
+     */
     @Override
     public String attackPlayer(MapState mapS, Player player, NPC npc) {
         if (npc != null) {

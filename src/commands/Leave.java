@@ -1,11 +1,12 @@
 package commands;
 
-import NPCs.Boss;
-import NPCs.Enemy;
 import NPCs.NPC;
 import items.player.Player;
 import mapState.MapState;
 
+/**
+ * This class is used to end the game
+ */
 public class Leave extends Command{
 
     @Override

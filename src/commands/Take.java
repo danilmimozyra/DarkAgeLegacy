@@ -9,9 +9,17 @@ import items.Weapon;
 import items.player.Player;
 import mapState.MapState;
 
+/**
+ * This class is used to pick up an item
+ */
 public class Take extends Command {
     private String command;
 
+    /**
+     * @param mapS is a current MapState in which the changes will happen
+     * @param player is a Player who makes changes
+     * @return String with information what had happened
+     */
     @Override
     public String execute(MapState mapS, Player player) {
         Item item = mapS.getCurrentRoom().findItem(command);
@@ -51,6 +59,12 @@ public class Take extends Command {
         this.command = command;
     }
 
+    /**
+     * @param mapS is a current MapState in the Enemy is currently located
+     * @param player is Player who is getting attacked
+     * @param npc is an NPC. If NPC is an Enemy who will attack the player
+     * @return String with information what had happened
+     */
     @Override
     public String attackPlayer(MapState mapS, Player player, NPC npc) {
         if (npc != null) {

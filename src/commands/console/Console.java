@@ -4,7 +4,6 @@ import commands.*;
 import items.player.Player;
 import mapState.MapState;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -31,12 +30,13 @@ public class Console {
         commands.put("take", new Take());
         commands.put("put", new Put());
         commands.put("use", new Use());
-        commands.put("talk", new Talk());
         commands.put("attack", new Attack());
         commands.put("block", new Block());
         commands.put("leave", new Leave());
         commands.put("inventory", new Invent());
         commands.put("craft", new Craft());
+        commands.put("give", new Give());
+        commands.put("puzzle", new Puzzle());
     }
 
     public void start() {
